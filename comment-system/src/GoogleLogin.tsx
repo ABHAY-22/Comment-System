@@ -7,13 +7,13 @@ const GoogleLogin: React.FC = () => {
   const [isSigningIn, setIsSigningIn] = useState(false);
 
   const handleGoogleSignIn = async () => {
-    if (isSigningIn) return; // Prevent multiple sign-in attempts
+    if (isSigningIn) return;
     setIsSigningIn(true);
 
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
-      setUser(result.user); // Store user information in state
+      setUser(result.user); 
     } catch (error) {
       console.error('Error during sign-in:', error);
     } finally {
@@ -24,7 +24,7 @@ const GoogleLogin: React.FC = () => {
   const handleSignOut = async () => {
     try {
       await auth.signOut();
-      setUser(null); // Clear user information
+      setUser(null); 
     } catch (error) {
       console.error('Error during sign-out:', error);
     }

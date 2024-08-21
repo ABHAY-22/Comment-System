@@ -28,14 +28,14 @@ const CommentBox: React.FC<CommentBoxProps> = ({ userId }) => {
   }, []);
 
   const handleAddComment = async () => {
-    if (text.trim() === '') return; // Avoid adding empty comments
+    if (text.trim() === '') return; 
 
     try {
       const comment = {
-        id: Date.now().toString(), // Generate a unique ID
+        id: Date.now().toString(), 
         user: {
-          displayName: 'Your Display Name', // Replace with actual display name
-          photoURL: 'default-photo-url', // Replace with actual photo URL
+          displayName: 'Your Display Name', 
+          photoURL: 'default-photo-url', 
         },
         text,
         createdAt: new Date(),
@@ -45,10 +45,10 @@ const CommentBox: React.FC<CommentBoxProps> = ({ userId }) => {
       };
 
       await addDoc(collection(db, 'comments'), comment);
-      setText(''); // Clear text after submission
-      setPlaceholderVisible(true); // Show placeholder after clearing
+      setText('');
+      setPlaceholderVisible(true); 
       if (contentEditableRef.current) {
-        contentEditableRef.current.innerText = ''; // Clear the contentEditable div
+        contentEditableRef.current.innerText = ''; 
       }
       console.log('Comment added successfully');
     } catch (error) {
@@ -57,10 +57,10 @@ const CommentBox: React.FC<CommentBoxProps> = ({ userId }) => {
   };
 
   const handleCancel = () => {
-    setText(''); // Clear text when canceling
-    setPlaceholderVisible(true); // Show placeholder after clearing
+    setText('');
+    setPlaceholderVisible(true);
     if (contentEditableRef.current) {
-        contentEditableRef.current.innerText = ''; // Clear the contentEditable div
+        contentEditableRef.current.innerText = ''; 
     }
   };
 
@@ -75,7 +75,7 @@ const CommentBox: React.FC<CommentBoxProps> = ({ userId }) => {
     <div className="bg-white p-6 rounded-lg shadow-lg border border-gray-300 max-w-lg mx-auto">
       <div className="flex items-start space-x-4">
         <img
-          src="default-avatar-url" // Replace with actual user avatar URL
+          src="default-avatar-url" 
           alt="User Avatar"
           className="w-10 h-10 rounded-full"
         />

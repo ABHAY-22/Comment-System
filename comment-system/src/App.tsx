@@ -5,7 +5,7 @@ import GoogleLogin from './GoogleLogin';
 import { ToastContainer } from 'react-toastify';
 
 const App: React.FC = () => {
-  // Replace this with the actual user ID from your app state or context
+ 
   const userId = 'some-user-id';
 
   return (

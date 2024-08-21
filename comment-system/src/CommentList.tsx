@@ -1,5 +1,4 @@
 
-
 import React, { useEffect, useState } from 'react';
 import { collection, query, orderBy, limit, startAfter, onSnapshot, doc, updateDoc, getDoc, Timestamp } from 'firebase/firestore';
 import { db } from './firebase';
@@ -70,15 +69,20 @@ const CommentList: React.FC = () => {
   }, [sortBy, page]);
 
   const handleReplySubmit = async (replyText: string, parentId: string) => {
+    console.log('handleReplySubmit called with parentId:', parentId);
     try {
       const commentRef = doc(db, 'comments', parentId);
       const commentDoc = await getDoc(commentRef);
-      
+
+      console.log('Document reference path:', commentRef.path);
+      console.log('Document exists:', commentDoc.exists(), 'Document data:', commentDoc.data());
+
       if (!commentDoc.exists()) {
+        console.error(`Error: Comment with ID ${parentId} not found.`);
         throw new Error('Comment not found');
       }
 
-      const existingData = commentDoc.data();
+      const existingData = commentDoc.data() as Comment;
       const newReply = {
         id: Date.now().toString(),
         user: {
@@ -93,11 +97,12 @@ const CommentList: React.FC = () => {
       };
 
       const updatedReplies = [...(existingData?.replies || []), newReply];
+      console.log('Updating document with new replies:', updatedReplies);
       await updateDoc(commentRef, { replies: updatedReplies });
 
       toast.success('Reply added successfully!');
     } catch (error) {
-      console.error('Error adding reply: ', error);
+      console.error('Error adding reply:', error, 'parentId:', parentId);
       toast.error('Failed to add reply.');
     }
   };
@@ -119,7 +124,12 @@ const CommentList: React.FC = () => {
       <div className="space-y-4 max-h-[400px] overflow-y-auto">
         {comments.length > 0 ? (
           comments.map(comment => (
-            <CommentItem key={comment.id} comment={comment} onReplySubmit={handleReplySubmit} />
+            <CommentItem 
+              key={comment.id} 
+              comment={comment} 
+              onReplySubmit={handleReplySubmit} 
+              maxReplyDepth={2} 
+            />
           ))
         ) : (
           <div className="text-center text-gray-500">No comments available.</div>
